@@ -1,0 +1,9 @@
+services:
+  web:
+    build: .
+    ports:
+      - "4000:80"
+  redis:
+    image: redis
+    volumes:
+      - "./data:/data"
