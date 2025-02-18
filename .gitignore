@@ -1,0 +1,18 @@
+# Evita archivos de contenedores y volúmenes
+*.container
+*.tar
+
+# Docker Compose
+docker-compose.override.yml
+
+# Imágenes y caché de Docker
+**/docker-compose.yml
+**/Dockerfile
+**/.dockerignore
+**/docker-compose.override.yml
+**/docker-compose.*.yml
+.docker/
+.vscode/
+
+# Volúmenes de Docker (si usas bind mounts)
+volumes/
