@@ -8,6 +8,9 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_DATABASE: messages
+        volumes:
+            - mysql_data:/var/lib/mysql  # Volumen persistente para datos
+            - ./init-scripts:/docker-entrypoint-initdb.d  # Montar el script SQL
     adminer:
         container_name: myadminer
         image: adminer:latest
@@ -22,3 +25,5 @@ services:
         build: ./
         ports:
             - "5001:5000"
+volumes:
+    mysql_data:  # Volumen persistente para los datos de MySQL
