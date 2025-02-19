@@ -1,14 +1,30 @@
 from flask import Flask
 import socket
+import mysql.connector
 app = Flask(__name__)
-my
+
+config = {
+  'user': 'root',
+  'password': 'root',
+  'host': 'db',
+  'port': '3306',
+  'database': 'messages'
+}
+connection = mysql.connector.connect(**config)
+
 @app.route('/')
 def hello():
 	hostname = socket.gethostname
 	return "Hello, from server" + hostname
 
-@app.route('/data', methods=['GET'])
-def getData():
+@app.route('/data')
+def get_data():
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM messages;")  
+    data = cursor.fetchall()
+    cursor.close()
+    
+    return jsonify(data)
 	
 @app.route('/data', methods=['GET'], <num>)
 def getDataInt():

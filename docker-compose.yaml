@@ -2,7 +2,7 @@ version: "3"
 services:
     db:
         container_name: mydb
-        image: mysql:5.7
+        image: mysql:latest
         ports:
             - "32001:3306"
         environment:
