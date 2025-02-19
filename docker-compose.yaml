@@ -24,6 +24,6 @@ services:
             - "db"
         build: ./
         ports:
-            - "5001:5000"
+            - "80:80"
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL
