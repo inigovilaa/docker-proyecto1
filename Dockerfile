@@ -14,7 +14,7 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 EXPOSE 80
 
 # Declaramos una variable de entorno
-ENV NAME World
+#ENV NAME World
 
 # Ejecuta nuestra aplicación cuando se inicia el contenedor
 CMD ["python", "app.py"]

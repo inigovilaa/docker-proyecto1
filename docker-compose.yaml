@@ -1,8 +1,14 @@
-version: "3"
 services:
+    app:
+      container_name: myapp
+      build: ./
+      ports:
+        - "4000:80"
+      depends_on:
+        - db
     db:
         container_name: mydb
-        image: mysql:5.7
+        image: mysql:latest
         ports:
             - "32001:3306"
         environment:
@@ -10,20 +16,14 @@ services:
             MYSQL_DATABASE: messages
         volumes:
             - mysql_data:/var/lib/mysql  # Volumen persistente para datos
-            - ./init-scripts:/docker-entrypoint-initdb.d  # Montar el script SQL
+            - "./init-scripts:/docker-entrypoint-initdb.d"
+            # Montar el script SQL
     adminer:
         container_name: myadminer
         image: adminer:latest
         ports:
-            - 8080:8080
+            - "8080:8080"
         environment:
             ADMINER_DEFAULT_SERVER: db
-    app:
-        container_name: myapp
-        links:
-            - "db"
-        build: ./
-        ports:
-            - "5001:5000"
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL
