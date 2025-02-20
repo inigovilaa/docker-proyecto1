@@ -12,17 +12,15 @@ config = {
   'database': 'messages'
 }
 # Intentar conectarse con reintentos
-for i in range(10):  # 10 intentos
+while True:
     try:
         connection = mysql.connector.connect(**config)
-        print(" Conexión exitosa a MySQL")
-        break
+        print("Conexion exitosa a MySQL")
+        break  
     except mysql.connector.Error as err:
-        print(f" Intentando conectar a MySQL... (Intento {i+1}/10)")
+        print("Intentando conectar a MySQL")
         time.sleep(5)  # Esperar 5 segundos antes de reintentar
-else:
-    print(" No se pudo conectar a MySQL después de varios intentos")
-    exit(1)
+
 @app.route('/')
 def hello():
 	hostname = socket.gethostname()
