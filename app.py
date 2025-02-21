@@ -5,8 +5,8 @@ import time
 app = Flask(__name__)
 
 config = {
-  'user': 'root',
-  'password': 'root',
+  'user': 'admin',
+  'password': 'admin',
   'host': 'db',
   'port': 3306,
   'database': 'messages'
@@ -24,7 +24,7 @@ while True:
 @app.route('/')
 def hello():
 	hostname = socket.gethostname()
-	return "Hello, from server" + hostname + "!"
+	return "Hello, from server " + hostname + "!"
 
 @app.route('/data')
 def get_data():
@@ -35,10 +35,10 @@ def get_data():
     
   return jsonify(data)
 	
-@app.route('/data/<int:num>', methods=['GET'])
-def getDataInt():
+@app.route('/data/<num>', methods=['GET'])
+def getDataInt(num):
   cursor = connection.cursor()
-  cursor.execute("SELECT * FROM messages WHERE clid = %s;", (num))
+  cursor.execute("SELECT * FROM messages WHERE clid = %s;", (num,))
   data = cursor.fetchall()
   cursor.close()
   
@@ -49,13 +49,13 @@ def postData():
   data = request.get_json()  # Tomar JSON del request
   clid = data.get('clid')
   mess = data.get('mess')
-  server_name = socket.gethostname()  # Nombre del servidor
+  server_name = socket.gethostname() 
 
   if not clid or not mess:
       return jsonify({"error": "Faltan datos"}), 400
 
   cursor = connection.cursor()
-  sql = "INSERT INTO mensajes (clid, mess, server_name) VALUES (%s, %s, %s);"
+  sql = "INSERT INTO messages (clid, mess, sid) VALUES (%s, %s, %s);"
   cursor.execute(sql, (clid, mess, server_name))
   connection.commit()
   cursor.close()
@@ -63,26 +63,26 @@ def postData():
   return jsonify({"message": "Data added successfully"})
 
 @app.route('/data/<int:num>', methods=['PUT'])
-def putData():
-  data = request.get_json()  # Tomar JSON del request
+def putData(num):
+  data = request.get_json()  
   mess = data.get('mess')
-  server_name = socket.gethostname()  # Nombre del servidor
+  server_name = socket.gethostname() 
 
   if not mess:
       return jsonify({"error": "Faltan datos"}), 400
 
   cursor = connection.cursor()
-  sql = "UPDATE messages SET message = %s WHERE id = %s;"
-  cursor.execute(sql, (num, mess))
+  sql = "UPDATE messages SET mess = %s WHERE clid = %s;"
+  cursor.execute(sql, (mess, num))
   connection.commit()
   cursor.close()
   
   return jsonify("Data updated")
 
-@app.route('/data/<int:num>', methods=['DELETE'])
-def deleteData():
+@app.route('/data/<num>', methods=['DELETE'])
+def deleteData(num):
   cursor = connection.cursor()
-  cursor.execute("DELETE FROM messages WHERE id = %s;", (num))
+  cursor.execute("DELETE FROM messages WHERE clid = %s;", (num,))
   connection.commit()
   cursor.close()
   

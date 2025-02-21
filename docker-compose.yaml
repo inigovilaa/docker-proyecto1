@@ -33,5 +33,11 @@ services:
         build: ./
         ports:
             - "80:80"
+    prometheus:
+        container_name: myprometheus
+        image: prom/mysqld-exporter
+        ports:
+            - "9104:9104"
+
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL

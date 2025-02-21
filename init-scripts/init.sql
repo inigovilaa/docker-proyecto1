@@ -2,7 +2,7 @@ CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
 
 CREATE DATABASE IF NOT EXISTS messages;
 
-GRANT ALL PRIVILEGES ON ipmd TO 'admin'@'localhost';
+GRANT ALL PRIVILEGES ON messages TO 'admin'@'localhost';
 
 USE messages;
 
@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS messages (
 );
 
 INSERT INTO messages (clid, mess, sid) VALUES
-(1, 'Hello world from messages table!', 'abc'),
+(1, 'Hello world!', 'abc'),
 (2, 'Test', 'def'),
-(3, 'Yeray2 is the best team from ipmd', 'abc');
+(3, 'Last entry', 'xyz');
