@@ -1,8 +1,12 @@
 from flask import Flask, jsonify, request
 import socket
+from prometheus_flask_exporter import PrometheusMetrics
 import mysql.connector
 import time
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
+metrics.info('app_info', 'Application info', version='1.0.3')
+
 
 config = {
   'user': 'admin',

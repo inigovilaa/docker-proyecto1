@@ -33,11 +33,36 @@ services:
         build: ./
         ports:
             - "80:80"
+    
     prometheus:
         container_name: myprometheus
         image: prom/mysqld-exporter
         ports:
             - "9104:9104"
+        links:
+            - db
+        depends_on:
+            db:
+                condition: service_healthy
+
+    
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        environment:
+        - GF_SECURITY_ADMIN_PASSWORD=admin
+        - GF_ALERTING_EXECUTE_ALERTS=false
+        #volumes:
+        #- grafana_data:/var/lib/grafana
+        ports:
+        - 3000:3000
+        links:
+        - prometheus
+        depends_on:
+        - prometheus
+networks:
+  default:
+    driver: bridge
 
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL
