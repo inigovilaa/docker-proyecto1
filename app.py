@@ -4,6 +4,8 @@ import mysql.connector
 import time
 app = Flask(__name__)
 
+
+
 config = {
   'user': 'admin',
   'password': 'admin',
@@ -26,23 +28,26 @@ def hello():
 	hostname = socket.gethostname()
 	return "Hello, from server " + hostname + "!"
 
-@app.route('/data')
+
+@app.route('/data') #no hace falta poner el metodo porque por defecto es GET
 def get_data():
   cursor = connection.cursor()
-  cursor.execute("SELECT * FROM messages;")  
+  query = "SELECT * FROM messages;"
+  cursor.execute(query)  
   data = cursor.fetchall()
   cursor.close()
     
-  return jsonify(data)
-	
-@app.route('/data/<num>', methods=['GET'])
-def getDataInt(num):
+  return data #no hace falta jsonify porque en la query ya se hace
+
+@app.route('/data/<int:id>')
+def get_mess_by_id(id):
   cursor = connection.cursor()
-  cursor.execute("SELECT * FROM messages WHERE clid = %s;", (num,))
+  query = "SELECT * FROM messages WHERE clid = %s;"
+  cursor.execute(query, (id,))  
   data = cursor.fetchall()
   cursor.close()
-  
-  return jsonify(data)
+    
+  return data
 
 @app.route('/data', methods=['POST'])
 def postData():
@@ -52,11 +57,14 @@ def postData():
   server_name = socket.gethostname() 
 
   if not clid or not mess:
-      return jsonify({"error": "Faltan datos"}), 400
+      return jsonify({"error": "Faltan datos, introduzca datos para clid y mess"}), 400
+  
+  if get_mess_by_id(clid) != []:
+    return jsonify({"error": "El id ya existe"}), 400
 
   cursor = connection.cursor()
-  sql = "INSERT INTO messages (clid, mess, sid) VALUES (%s, %s, %s);"
-  cursor.execute(sql, (clid, mess, server_name))
+  query = "INSERT INTO messages (clid, mess, sid) VALUES (%s, %s, %s);"
+  cursor.execute(query, (clid, mess, server_name))
   connection.commit()
   cursor.close()
 
@@ -66,27 +74,33 @@ def postData():
 def putData(num):
   data = request.get_json()  
   mess = data.get('mess')
-  server_name = socket.gethostname() 
 
   if not mess:
       return jsonify({"error": "Faltan datos"}), 400
+  
+  if get_mess_by_id(num) == []:
+    return jsonify({"error": "El mensaje con ese id no existe"}), 400
 
   cursor = connection.cursor()
-  sql = "UPDATE messages SET mess = %s WHERE clid = %s;"
-  cursor.execute(sql, (mess, num))
+  query = "UPDATE messages SET mess = %s WHERE clid = %s;"
+  cursor.execute(query, (mess, num))
   connection.commit()
   cursor.close()
   
-  return jsonify("Data updated")
+  return jsonify({"message": "Data updated successfully"})
 
 @app.route('/data/<num>', methods=['DELETE'])
 def deleteData(num):
+  if get_mess_by_id(num) == []:
+    return jsonify({"error": "El mensaje con ese id no existe"}), 400
+  
+
   cursor = connection.cursor()
   cursor.execute("DELETE FROM messages WHERE clid = %s;", (num,))
   connection.commit()
   cursor.close()
   
-  return jsonify("Data deleted")
+  return jsonify({"message": "Data deleted successfully"})
 
 
 if __name__ == '__main__':

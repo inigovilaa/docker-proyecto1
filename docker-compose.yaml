@@ -1,8 +1,7 @@
-version: "3"
 services:
     db:
         container_name: mydb
-        image: mysql:5.7
+        image: mysql:latest
         ports:
             - "32001:3306"
         environment:
@@ -33,11 +32,5 @@ services:
         build: ./
         ports:
             - "80:80"
-    prometheus:
-        container_name: myprometheus
-        image: prom/mysqld-exporter
-        ports:
-            - "9104:9104"
-
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL
