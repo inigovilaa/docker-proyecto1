@@ -5,6 +5,7 @@ import time
 app = Flask(__name__)
 
 
+
 config = {
   'user': 'admin',
   'password': 'admin',
@@ -27,6 +28,7 @@ def hello():
 	hostname = socket.gethostname()
 	return "Hello, from server " + hostname + "!"
 
+
 @app.route('/data') #no hace falta poner el metodo porque por defecto es GET
 def get_data():
   cursor = connection.cursor()
@@ -46,7 +48,7 @@ def get_mess_by_id(id):
   cursor.close()
     
   return data
-	
+
 @app.route('/data', methods=['POST'])
 def postData():
   data = request.get_json()  # Tomar JSON del request
@@ -92,6 +94,7 @@ def deleteData(num):
   if get_mess_by_id(num) == []:
     return jsonify({"error": "El mensaje con ese id no existe"}), 400
   
+
   cursor = connection.cursor()
   cursor.execute("DELETE FROM messages WHERE clid = %s;", (num,))
   connection.commit()
