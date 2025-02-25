@@ -2,7 +2,11 @@ from flask import Flask, jsonify, request
 import socket
 import mysql.connector
 import time
+from prometheus_flask_exporter import PrometheusMetrics
+
+
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 
 
 
@@ -79,7 +83,7 @@ def putData(num):
       return jsonify({"error": "Faltan datos"}), 400
   
   if get_mess_by_id(num) == []:
-    return jsonify({"error": "El mensaje con ese id no existe"}), 400
+    return jsonify({"error": "El id no existe"}), 400
 
   cursor = connection.cursor()
   query = "UPDATE messages SET mess = %s WHERE clid = %s;"
@@ -89,7 +93,7 @@ def putData(num):
   
   return jsonify({"message": "Data updated successfully"})
 
-@app.route('/data/<num>', methods=['DELETE'])
+@app.route('/data/<int:num>', methods=['DELETE'])
 def deleteData(num):
   if get_mess_by_id(num) == []:
     return jsonify({"error": "El mensaje con ese id no existe"}), 400
