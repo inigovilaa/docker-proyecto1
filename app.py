@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import socket
 import mysql.connector
 import time
+import os
 from prometheus_flask_exporter import PrometheusMetrics
 
 
@@ -11,9 +12,9 @@ metrics = PrometheusMetrics(app)
 
 
 config = {
-  'user': 'admin',
-  'password': 'admin',
-  'host': 'db',
+  'user': 'admin99',
+  'password': 'Admin9999',
+  'host': os.getenv('DB_HOST', 'db'),
   'port': 3306,
   'database': 'messages'
 }
