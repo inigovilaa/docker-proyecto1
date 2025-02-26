@@ -37,7 +37,7 @@ services:
                 condition: service_healthy
         build: ./
         ports:
-            - "80:80"
+           - "80:80"
         environment:
             - DB_HOST=db
         networks:
@@ -51,6 +51,7 @@ services:
         depends_on:
             - app
         ports:
+<<<<<<< HEAD
             - "9090:9090"
         networks:
             - default
@@ -85,6 +86,33 @@ services:
             - 3000:3000
         networks:
             - default
+=======
+            - "9104:9104"
+        links:
+            - db
+        depends_on:
+            db:
+                condition: service_healthy
+
+    
+    grafana:
+        image: grafana/grafana:latest
+        container_name: grafana
+        environment:
+        - GF_SECURITY_ADMIN_PASSWORD=admin
+        - GF_ALERTING_EXECUTE_ALERTS=false
+        #volumes:
+        #- grafana_data:/var/lib/grafana
+        ports:
+        - 3000:3000
+        links:
+        - prometheus
+        depends_on:
+        - prometheus
+networks:
+  default:
+    driver: bridge
+>>>>>>> 8e67081fb1c6d4f9ecc624e3dfcb2340c96c6def
 
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL
