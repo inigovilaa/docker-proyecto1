@@ -41,8 +41,8 @@ El proyecto se compone de los siguientes contenedores:
 ### **Pasos de despliegue**
 1. Clonar el repositorio:
    ```sh
-   git clone <URL_DEL_REPO>
-   cd <NOMBRE_DEL_REPO>
+   git clone https://github.com/inigovilaa/docker-proyecto1.git
+   cd docker-proyecto1
    ```
 2. Construir y levantar los contenedores:
    ```sh
