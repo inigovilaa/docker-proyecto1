@@ -68,6 +68,22 @@ services:
         networks:
             - default
 
+    grafana:
+        container_name: grafana
+        image: grafana/grafana
+        restart: unless-stopped
+        environment:
+            - GF_SECURITY_ADMIN_USER=admin
+            - GF_SECURITY_ADMIN_PASSWORD=admin
+        volumes:
+            - ./grafana:/etc/grafana/provisioning/datasources
+        depends_on:
+            - prometheus
+        ports:
+            - 3000:3000
+        networks:
+            - default
+
 volumes:
     mysql_data:  # Volumen persistente para los datos de MySQL
 
