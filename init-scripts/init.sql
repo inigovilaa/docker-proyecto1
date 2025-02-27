@@ -1,8 +1,8 @@
-CREATE USER 'admin99'@'localhost' IDENTIFIED BY 'Admin9999';
+CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';
 
 CREATE DATABASE IF NOT EXISTS messages;
 
-GRANT ALL PRIVILEGES ON messages TO 'admin99'@'localhost';
+GRANT ALL PRIVILEGES ON messages TO 'admin'@'localhost';
 
 USE messages;
 
