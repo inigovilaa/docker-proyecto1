@@ -17,4 +17,4 @@ EXPOSE 80
 #ENV NAME World
 
 # Ejecuta nuestra aplicación cuando se inicia el contenedor
-CMD ["python", "app.py"]
+CMD ["python", "app.py","--host=0.0.0.0", "--port=80"]
