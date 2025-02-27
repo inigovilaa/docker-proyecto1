@@ -34,7 +34,7 @@ services:
         build: ./       
         deploy:
             mode: replicated
-            replicas: 1  # Ejecutar 3 instancias de Flask
+            replicas: 1  # Ejecutar n instancias de Flask
         networks:
             - mynetwork
         depends_on:
@@ -54,6 +54,7 @@ services:
     prometheus:
         container_name: prometheus
         image: prom/prometheus:latest
+        restart: unless-stopped
         volumes:
             - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
         depends_on:
@@ -80,13 +81,15 @@ services:
 
     grafana:
         container_name: grafana
-        image: grafana/grafana
+        image: grafana/grafana:latest
         restart: unless-stopped
         environment:
             - GF_SECURITY_ADMIN_USER=admin
             - GF_SECURITY_ADMIN_PASSWORD=admin
         volumes:
-            - ./grafana:/etc/grafana/provisioning/datasources
+            - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+            - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+            - grafana-data:/var/lib/grafana
         depends_on:
             - prometheus
         ports:
@@ -101,4 +104,5 @@ networks:
         
 volumes:
     mysql_data:
+    grafana-data:
 
