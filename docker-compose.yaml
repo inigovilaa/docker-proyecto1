@@ -34,7 +34,7 @@ services:
         build: ./       
         deploy:
             mode: replicated
-            replicas: 3  # Ejecutar n instancias de Flask
+            replicas: 1  # Ejecutar n instancias de Flask
         networks:
             - mynetwork
         environment:
