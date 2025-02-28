@@ -32,7 +32,7 @@ while True:
 @app.route('/')
 def hello():
 	hostname = socket.gethostname()
-	return "Hello, from server " + hostname + "!"
+	return "Hello, from server " + hostname + "!\n"
 
 
 @app.route('/data') #no hace falta poner el metodo porque por defecto es GET
