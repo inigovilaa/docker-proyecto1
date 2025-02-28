@@ -19,24 +19,29 @@ config = {
   'port': 3306,
   'database': 'messages'
 }
+
 # Intentar conectarse con reintentos
-while True:
-    try:
-        connection = mysql.connector.connect(**config)
-        print("Conexion exitosa a MySQL")
-        break  
-    except mysql.connector.Error as err:
-        print("Intentando conectar a MySQL")
-        time.sleep(5)  # Esperar 5 segundos antes de reintentar
+def connectToSQL():
+    while True:
+        try:
+            connection = mysql.connector.connect(**config)
+            print("Conexion exitosa a MySQL")
+            break  
+        except mysql.connector.Error as err:
+            print("Intentando conectar a MySQL")
+            time.sleep(5)  # Esperar 5 segundos antes de reintentar
+    return connection
 
 @app.route('/')
 def hello():
 	hostname = socket.gethostname()
-	return "Hello, from server " + hostname + "!"
+	return "Hello, from server " + hostname + "!\n"
 
 
 @app.route('/data') #no hace falta poner el metodo porque por defecto es GET
 def get_data():
+  connection = connectToSQL()
+  
   cursor = connection.cursor()
   query = "SELECT * FROM messages;"
   cursor.execute(query)  
@@ -47,9 +52,11 @@ def get_data():
 
 @app.route('/data/<int:id>')
 def get_mess_by_id(id):
+  connection = connectToSQL()
+
   cursor = connection.cursor()
   query = "SELECT * FROM messages WHERE clid = %s;"
-  cursor.execute(query, (id,))  
+  cursor.execute(query, (id,))
   data = cursor.fetchall()
   cursor.close()
     
@@ -57,6 +64,7 @@ def get_mess_by_id(id):
 
 @app.route('/data', methods=['POST'])
 def postData():
+  connection = connectToSQL()
   data = request.get_json()  # Tomar JSON del request
   clid = data.get('clid')
   mess = data.get('mess')
@@ -78,6 +86,8 @@ def postData():
 
 @app.route('/data/<int:num>', methods=['PUT'])
 def putData(num):
+  connection = connectToSQL()
+
   data = request.get_json()  
   mess = data.get('mess')
 
@@ -97,6 +107,8 @@ def putData(num):
 
 @app.route('/data/<int:num>', methods=['DELETE'])
 def deleteData(num):
+  connection = connectToSQL()
+
   if get_mess_by_id(num) == []:
     return jsonify({"error": "El mensaje con ese id no existe"}), 400
   
