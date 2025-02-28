@@ -35,12 +35,12 @@ services:
         deploy:
             mode: replicated
             replicas: 1  # Ejecutar n instancias de Flask
-        networks:
-            - mynetwork
         environment:
             - DB_HOST=db
         depends_on:
             - db
+        networks:
+            - mynetwork
 
     nginx:
         image: nginx:latest
