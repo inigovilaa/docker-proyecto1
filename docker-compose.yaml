@@ -6,8 +6,8 @@ services:
             - "32001:3306"
         environment:
             MYSQL_ROOT_PASSWORD: root      
-            MYSQL_USER: admin
-            MYSQL_PASSWORD: admin
+            MYSQL_USER: admin99
+            MYSQL_PASSWORD: Admin9999
             MYSQL_DATABASE: messages
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
@@ -37,6 +37,8 @@ services:
             replicas: 1  # Ejecutar n instancias de Flask
         networks:
             - mynetwork
+        environment:
+            - DB_HOST=db
         depends_on:
             - db
 

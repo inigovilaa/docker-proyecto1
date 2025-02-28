@@ -13,9 +13,9 @@ metrics.info('app_info', 'Application info', version='1.0.3')
 
 
 config = {
-  'user': 'admin',
-  'password': 'admin',
-  'host': 'db',
+  'user': 'admin99',
+  'password': 'Admin9999',
+  'host': os.getenv('DB_HOST', 'db'),
   'port': 3306,
   'database': 'messages'
 }
