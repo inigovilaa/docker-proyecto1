@@ -13,8 +13,5 @@ RUN pip install --trusted-host pypi.python.org -r requirements.txt
 # Indicamos que este contenedor se comunica por el puerto 80/tcp
 EXPOSE 80
 
-# Declaramos una variable de entorno
-#ENV NAME World
-
 # Ejecuta nuestra aplicación cuando se inicia el contenedor
 CMD ["python", "app.py","--host=0.0.0.0", "--port=80"]
