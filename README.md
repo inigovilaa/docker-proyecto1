@@ -8,7 +8,7 @@ Este proyecto consiste en la implementación y despliegue de una API REST basada
 - Soluciones basadas en contenedores.
 - Orquestación de contenedores con Docker Compose.
 - Monitorización del rendimiento de servicios.
-- (Opcional) Servicios escalables y despliegue en la nube.
+- Servicios escalables y despliegue en la nube.
 
 ## Tecnologías Utilizadas
 - **Backend**: Flask (Python)
@@ -49,17 +49,17 @@ El proyecto se compone de los siguientes contenedores:
    docker-compose up --build -d
    ```
 3. Acceder a los servicios:
-   - API REST: `http://localhost:80`
+   - API REST: `http://localhost:4000`
    - Adminer: `http://localhost:8080`
    - Prometheus: `http://localhost:9090`
    - Grafana: `http://localhost:3000`
    
 ## Monitorización con Prometheus y Grafana
-- La API REST expone métricas en `http://localhost:80/metrics`.
+- La API REST expone métricas en `http://localhost:4000/metrics`.
 - mysqld-exporter expone métricas de MySQL en `http://localhost:9104/metrics`.
 - Grafana permite visualizar las métricas mediante dashboards preconfigurados.
 
 ## Autores
-Este proyecto fue realizado por **Jiayuan Wang** e **Iñigo Vilá** en el contexto de la evaluación continua. En evaluación global, el trabajo es individual.
+Este proyecto fue realizado por **Jiayuan Wang** e **Iñigo Vilá** para la asignatura de Infraestructuras para el Procesamiento Masivo de Datos.
 
 
