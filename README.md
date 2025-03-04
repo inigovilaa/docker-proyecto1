@@ -1,4 +1,4 @@
-# Proyecto: API REST con Flask, MySQL y Monitorización con Prometheus
+# Proyecto: Orquestación de Servicios
 
 ## Descripción
 Este proyecto consiste en la implementación y despliegue de una API REST basada en Flask, con persistencia de datos en MySQL, utilizando Docker y Docker Compose. Además, se incorpora monitorización con Prometheus y Grafana para supervisar el rendimiento de los servicios.
