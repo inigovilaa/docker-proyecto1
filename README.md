@@ -21,10 +21,11 @@ Este proyecto consiste en la implementación y despliegue de una API REST basada
 El proyecto se compone de los siguientes contenedores:
 1. **Base de datos (MySQL)**: Almacena los mensajes.
 2. **Adminer**: Interfaz web para gestionar MySQL.
-3. **API REST (Flask)**: Exposición de endpoints para CRUD de mensajes.
-4. **Prometheus**: Recoge métricas de Flask y MySQL.
-5. **Grafana**: Visualización de métricas.
-6. **mysqld-exporter**: Traduce métricas de MySQL para Prometheus.
+3. **nginx**: Balanceador de carga para escalabilidad de la app. 
+4. **API REST (Flask)**: Exposición de endpoints para CRUD de mensajes.
+5. **Prometheus**: Recoge métricas de Flask y MySQL.
+6. **Grafana**: Visualización de métricas.
+7. **mysqld-exporter**: Traduce métricas de MySQL para Prometheus.
 
 ## Endpoints de la API REST
 - `GET /` → Mensaje de prueba
