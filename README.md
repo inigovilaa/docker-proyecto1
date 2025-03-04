@@ -46,7 +46,7 @@ El proyecto se compone de los siguientes contenedores:
    ```
 2. Construir y levantar los contenedores:
    ```sh
-   docker-compose up --build -d
+   $docker compose up --build -d --scale app=1
    ```
 3. Acceder a los servicios:
    - API REST: `http://localhost:4000`
