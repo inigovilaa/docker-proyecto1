@@ -1,18 +1,18 @@
 global:
-  scrape_interval: 3s
+  scrape_interval: 3s  # Intervalo de tiempo en el que Prometheus recopila métricas de los targets.
   external_labels:
-    monitor: "app"
+    monitor: "app"  
 
 scrape_configs:
-  - job_name: "prometheus"
+  - job_name: "prometheus"  # Configuración para monitorear Prometheus.
     static_configs:
-      - targets: ["prometheus:9090"]
+      - targets: ["prometheus:9090"]  # Prometheus se monitorea a sí mismo.
 
-  - job_name: "app"
+  - job_name: "app"  # Configuración para monitorear la aplicación Flask.
     static_configs:
       - targets:
-          - "app:80"
+          - "app:80"  # Dirección del contenedor de la aplicación Flask.
 
-  - job_name: "mysql_exporter"
+  - job_name: "mysql_exporter"  # Configuración para monitorear MySQL a través del Exporter.
     static_configs:
-      - targets: ["mysql-exporter:9104"]
+      - targets: ["mysql-exporter:9104"]  # Dirección del contenedor del Exporter de MySQL.
