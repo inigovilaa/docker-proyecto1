@@ -7,15 +7,15 @@ services:
             MYSQL_USER: admin99
             MYSQL_PASSWORD: Admin9999
             MYSQL_DATABASE: messages
-        healthcheck:
+        healthcheck:  # sanity check de MySQL
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
             interval: 10s
             retries: 5
         volumes:
-            - mysql_data:/var/lib/mysql
-            - ./init-scripts:/docker-entrypoint-initdb.d
+            - mysql_data:/var/lib/mysql  # Almacena datos de MySQL
+            - ./init-scripts:/docker-entrypoint-initdb.d  # Script de inicialización
         ports:
-            - "32001:3306"
+            - "32001:3306"  
         networks:
             - mynetwork
 
@@ -26,7 +26,7 @@ services:
         environment:
             ADMINER_DEFAULT_SERVER: db
         ports:
-            - "8080:8080"
+            - "8080:8080"  # Interfaz web de Adminer
         networks:
             - mynetwork
 
@@ -34,9 +34,9 @@ services:
         build: ./       
         deploy:
             mode: replicated
-            replicas: 1  # Ejecutar n instancias de Flask
+            replicas: 1  
         environment:
-            - DB_HOST=db
+            - DB_HOST=db  # Variable de entorno para conexión a la base de datos (Azure/local)
         depends_on:
             - db
         networks:
@@ -47,9 +47,9 @@ services:
         depends_on:
             - app
         volumes:
-            - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Configuración del balanceador
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Configuración del balanceador de carga
         ports:
-            - "4000:4000"
+            - "4000:4000"  # Expone Nginx en el puerto 4000
         networks:
             - mynetwork
 
@@ -58,11 +58,11 @@ services:
         image: prom/prometheus:latest
         restart: unless-stopped
         volumes:
-            - ./prometheus/config.yml:/etc/prometheus/prometheus.yml
+            - ./prometheus/config.yml:/etc/prometheus/prometheus.yml  # Configuración de Prometheus
         depends_on:
             - app
         ports:
-            - "9090:9090"
+            - "9090:9090"  # Interfaz de Prometheus
         networks:
             - mynetwork
 
@@ -71,13 +71,13 @@ services:
         image: prom/mysqld-exporter
         command: 
             - --config.my-cnf=/cfg/.my.cnf
-            - --mysqld.address=db:3306
+            - --mysqld.address=db:3306  # Exporta métricas de MySQL
         volumes:
             - "./.my.cnf:/cfg/.my.cnf"
         depends_on:
             - db
         ports:
-            - 9104:9104
+            - 9104:9104  # Expone métricas en el puerto 9104
         networks:
             - mynetwork
 
@@ -91,20 +91,19 @@ services:
         volumes:
             - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
             - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
-            - grafana-data:/var/lib/grafana
+            - grafana-data:/var/lib/grafana  # Persistencia de datos de Grafana
         depends_on:
             - prometheus
         ports:
-            - 3000:3000
+            - 3000:3000  # Interfaz de Grafana
         networks:
             - mynetwork
 
 networks:
     mynetwork:
         driver: bridge
-        name: mynetwork
-        
-volumes:
-    mysql_data:
-    grafana-data:
+        name: mynetwork  # Definición de red personalizada
 
+volumes:
+    mysql_data:  # Volumen para persistencia de MySQL
+    grafana-data:  # Volumen para persistencia de Grafana
